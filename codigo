@@ -1,0 +1,98 @@
+import { useEffect, useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input, Textarea } from "@/components/ui/input";
+
+function App() {
+  const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useState([]);
+  const [newPost, setNewPost] = useState({ title: "", content: "" });
+
+  useEffect(() => {
+    // Simular pantalla de carga
+    setTimeout(() => setLoading(false), 1500);
+  }, []);
+
+  const handlePostSubmit = (e) => {
+    e.preventDefault();
+    if (newPost.title && newPost.content) {
+      setPosts([...posts, newPost]);
+      setNewPost({ title: "", content: "" });
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-100">
+      {loading ? (
+        <div className="flex items-center justify-center h-screen">
+          <div className="spinner-border animate-spin w-16 h-16 border-4 border-blue-500 rounded-full"></div>
+          <p className="ml-4">Cargando...</p>
+        </div>
+      ) : (
+        <div>
+          <header className="bg-white shadow sticky top-0 z-50">
+            <nav className="p-4">
+              <ul className="flex justify-around">
+                <li><a href="#" className="text-blue-600 hover:underline">Inicio</a></li>
+                <li><a href="#" className="text-blue-600 hover:underline">Blog</a></li>
+                <li><a href="#" className="text-blue-600 hover:underline">Revistas</a></li>
+                <li><a href="#" className="text-blue-600 hover:underline">Perfil</a></li>
+              </ul>
+            </nav>
+          </header>
+
+          <main className="p-6">
+            <section className="text-center mb-8">
+              <h1 className="text-4xl font-bold mb-4">Foro de Debate</h1>
+              <p>Participa y comparte tus opiniones</p>
+            </section>
+
+            <Card className="mx-auto max-w-2xl">
+              <CardContent>
+                <form onSubmit={handlePostSubmit}>
+                  <Input
+                    placeholder="Título del debate"
+                    value={newPost.title}
+                    onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
+                    required
+                    className="mb-4"
+                  />
+                  <Textarea
+                    placeholder="Escribe tu mensaje..."
+                    value={newPost.content}
+                    onChange={(e) => setNewPost({ ...newPost, content: e.target.value })}
+                    required
+                    className="mb-4"
+                  />
+                  <Button type="submit">Publicar</Button>
+                </form>
+              </CardContent>
+            </Card>
+
+            <div className="mt-8">
+              <h2 className="text-2xl mb-4">Publicaciones</h2>
+              {posts.length > 0 ? (
+                posts.map((post, index) => (
+                  <Card key={index} className="my-4">
+                    <CardContent>
+                      <h3 className="text-xl font-bold">{post.title}</h3>
+                      <p>{post.content}</p>
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
+                <p className="text-gray-600">No hay publicaciones aún.</p>
+              )}
+            </div>
+          </main>
+
+          <footer className="bg-gray-800 text-white text-center py-4 mt-8">
+            <p>&copy; 2025 Blog Interactivo. Todos los derechos reservados.</p>
+          </footer>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;

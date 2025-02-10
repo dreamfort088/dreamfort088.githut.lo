@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blog Interactivo - Revistas</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Pantalla de carga -->
+  <div id="loading-screen">
+    <div class="spinner"></div>
+    <p>Cargando...</p>
+  </div>
+
+  <header>
+    <nav>
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="revistas.html">Revistas</a></li>
+        <li><a href="profile.html">Perfil</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="section">
+    <div class="container gallery">
+      <h2>Revistas Recientes</h2>
+      <div class="image-grid">
+        <img src="images/img1.jpg" alt="Revista 1">
+        <img src="images/img2.jpg" alt="Revista 2">
+        <img src="images/img3.jpg" alt="Revista 3">
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Blog Interactivo. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+document.addEventListener("DOMContentLoaded", function () {
+  // Ocultar la pantalla de carga
+  setTimeout(() => {
+    document.getElementById("loading-screen").classList.add("hidden");
+  }, 1500);
+
+  /* ---------- Foro (Chat) ---------- */
+  const newPostForm = document.getElementById("newPost");
+  const postsContainer = document.getElementById("posts");
+  if (newPostForm) {
+    newPostForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const title = document.getElementById("postTitle").value;
+      const content = document.getElementById("postContent").value;
+      const postHTML = `<div style="margin-bottom:20px; text-align:left;"><h3>${title}</h3><p>${content}</p></div>`;
+      postsContainer.innerHTML += postHTML;
+      newPostForm.reset();
+    });
+  }
+
+  /* ---------- Gestión de Usuario (Perfil) ---------- */
+  const loginForm = document.getElementById("login-form");
+  const logoutButton = document.getElementById("logout");
+  const userInfo = document.getElementById("user-info");
+
+  function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+      let date = new Date();
+      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+      expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + value + expires + "; path=/";
+  }
+
+  function getCookie(name) {
+    let nameEQ = name + "=";
+    let ca = document.cookie.split(";");
+    for (let c of ca) {
+      c = c.trim();
+      if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length);
+    }
+    return null;
+  }
+
+  function eraseCookie(name) {
+    document.cookie = name + "=; Max-Age=-99999999;";
+  }
+
+  function checkUserSession() {
+    let savedUser = getCookie("userEmail");
+    if (savedUser) {
+      if (userInfo) userInfo.innerHTML = `<p>Bienvenido, ${savedUser}</p>`;
+      if (loginForm) loginForm.style.display = "none";
+      if (logoutButton) logoutButton.style.display = "inline-block";
+    } else {
+      if (loginForm) loginForm.style.display = "block";
+      if (logoutButton) logoutButton.style.display = "none";
+    }
+  }
+
+  if (loginForm) {
+    checkUserSession();
+    loginForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      setCookie("userEmail", email, 7);
+      checkUserSession();
+    });
+  }
+
+  if (logoutButton) {
+    logoutButton.addEventListener("click", function () {
+      eraseCookie("userEmail");
+      checkUserSession();
+    });
+  }
+
+  /* ---------- Movimiento de la Pelota ---------- */
+  const ball = document.querySelector(".ball");
+  if (ball) {
+    // La animación principal se gestiona en CSS; aquí se realiza un movimiento aleatorio cada 4 segundos.
+    setInterval(() => {
+      let x = Math.random() * (window.innerWidth - 40);
+      let y = Math.random() * (window.innerHeight - 40);
+      ball.style.transform = `translate(${x}px, ${y}px)`;
+    }, 4000);
+  }
+});
